@@ -150,6 +150,7 @@ function TiltCard({
 export default function App() {
   const reducedMotion = useReducedMotion();
   const [introActive, setIntroActive] = useState(true);
+  const [exploreActive, setExploreActive] = useState(false);
   const [activeQuoteIndex, setActiveQuoteIndex] = useState(0);
   const [timelinePhase, setTimelinePhase] = useState<StoryPhase["id"]>("past");
   const [actionChallengeSelection, setActionChallengeSelection] = useState(actionChallenges[0].id);
@@ -187,6 +188,28 @@ export default function App() {
 
     return () => window.clearInterval(interval);
   }, [introActive]);
+
+  useEffect(() => {
+    if (!exploreActive) {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setExploreActive(false);
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [exploreActive]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -326,6 +349,32 @@ export default function App() {
 
   return (
     <div className="app-shell" ref={appRef}>
+      {exploreActive ? (
+        <div className="explore-overlay" role="dialog" aria-modal="true" aria-label="Explore Earth">
+          <div className="explore-backdrop" onClick={() => setExploreActive(false)} />
+          <div className="explore-shell glass-card">
+            <div className="explore-copy">
+              <span className="eyebrow">Interactive Earth Viewer</span>
+              <h2>Explore Earth</h2>
+              <p>Drag to rotate the globe. Use the mouse wheel or trackpad to zoom. Press Esc or close to return.</p>
+            </div>
+            <button
+              type="button"
+              className="explore-close"
+              onClick={() => setExploreActive(false)}
+              aria-label="Close Earth viewer"
+            >
+              Close
+            </button>
+            <div className="explore-canvas-shell">
+              <Suspense fallback={earthFallback}>
+                <EarthScene mode="explore" timelinePhase={timelinePhase} className="canvas-panel explore-canvas" />
+              </Suspense>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
       {introActive ? (
         <div className="intro-overlay" ref={introRef}>
           <div className="space-gradient" />
@@ -381,9 +430,9 @@ export default function App() {
                 and action prompts designed to make environmental change feel immediate, human, and possible.
               </p>
               <div className="hero-actions">
-                <a href="#story" className="primary-button">
+                <button type="button" className="primary-button" onClick={() => setExploreActive(true)}>
                   Explore Earth
-                </a>
+                </button>
                 <a href="#action" className="secondary-button">
                   Take Action
                 </a>
