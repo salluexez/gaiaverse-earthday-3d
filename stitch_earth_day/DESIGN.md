@@ -50,34 +50,34 @@ colors:
   surface-variant: '#353534'
 typography:
   display-xl:
-    fontFamily: Space Grotesk
+    fontFamily: Euclid Circular A
     fontSize: 72px
     fontWeight: '700'
     lineHeight: '1.1'
     letterSpacing: -0.04em
   headline-lg:
-    fontFamily: Space Grotesk
+    fontFamily: Euclid Circular A
     fontSize: 40px
     fontWeight: '600'
     lineHeight: '1.2'
     letterSpacing: -0.02em
   headline-md:
-    fontFamily: Space Grotesk
+    fontFamily: Euclid Circular A
     fontSize: 24px
     fontWeight: '500'
     lineHeight: '1.3'
   body-lg:
-    fontFamily: Inter
+    fontFamily: Euclid Circular A
     fontSize: 18px
     fontWeight: '400'
     lineHeight: '1.6'
   body-md:
-    fontFamily: Inter
+    fontFamily: Euclid Circular A
     fontSize: 16px
     fontWeight: '400'
     lineHeight: '1.6'
   label-caps:
-    fontFamily: Inter
+    fontFamily: Euclid Circular A
     fontSize: 12px
     fontWeight: '600'
     lineHeight: '1.0'
@@ -116,7 +116,7 @@ The palette utilizes absolute blacks and deep navies to establish infinite depth
 
 ## Typography
 
-This design system pairs the technical, geometric precision of **Space Grotesk** for headlines with the functional clarity of **Inter** for UI and body text. 
+This design system uses **Euclid Circular A** across headlines, UI, and body text to keep the interface premium, clean, and consistent. 
 
 Headlines should be treated as cinematic titles—tightly tracked and bold. Labels use an uppercase style with increased letter spacing to mimic aerospace instrumentation. Color contrast for typography should remain high: use pure white for primary text and a 60% transparent white for secondary/meta information.
 
