@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EARTH MISSION | Planetary Stewardship Command</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "inverse-surface": "#e5e2e1",
+                "outline": "#849585",
+                "surface-container-high": "#2a2a2a",
+                "surface-container": "#201f1f",
+                "surface-bright": "#3a3939",
+                "surface": "#131313",
+                "error-container": "#93000a",
+                "on-surface": "#e5e2e1",
+                "tertiary": "#fbfbfb",
+                "on-primary-fixed-variant": "#005228",
+                "tertiary-container": "#dedede",
+                "on-secondary-fixed": "#001849",
+                "secondary": "#b3c5ff",
+                "on-background": "#e5e2e1",
+                "on-secondary": "#002b75",
+                "secondary-fixed-dim": "#b3c5ff",
+                "surface-tint": "#00e479",
+                "secondary-fixed": "#dae1ff",
+                "on-error-container": "#ffdad6",
+                "on-primary-container": "#007139",
+                "surface-container-low": "#1c1b1b",
+                "inverse-on-surface": "#313030",
+                "on-primary": "#003919",
+                "on-tertiary-fixed": "#1a1c1c",
+                "outline-variant": "#3b4b3d",
+                "secondary-container": "#0266ff",
+                "primary-container": "#00ff88",
+                "on-error": "#690005",
+                "surface-container-highest": "#353534",
+                "primary": "#f1ffef",
+                "surface-container-lowest": "#0e0e0e",
+                "on-tertiary": "#2f3131",
+                "primary-fixed": "#60ff99",
+                "primary-fixed-dim": "#00e479",
+                "background": "#131313",
+                "on-tertiary-container": "#606262",
+                "on-secondary-fixed-variant": "#003fa4",
+                "tertiary-fixed-dim": "#c6c6c7",
+                "inverse-primary": "#006d37",
+                "error": "#ffb4ab",
+                "surface-variant": "#353534",
+                "on-secondary-container": "#f9f7ff",
+                "surface-dim": "#131313",
+                "on-surface-variant": "#b9cbb9",
+                "on-primary-fixed": "#00210c",
+                "tertiary-fixed": "#e2e2e2",
+                "on-tertiary-fixed-variant": "#454747"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "margin-edge": "40px",
+                "gutter": "24px",
+                "container-max": "1280px",
+                "stack-lg": "64px",
+                "stack-md": "32px",
+                "stack-sm": "16px",
+                "unit": "8px"
+            },
+            "fontFamily": {
+                "body-lg": ["Inter"],
+                "body-md": ["Inter"],
+                "headline-lg": ["Space Grotesk"],
+                "display-xl": ["Space Grotesk"],
+                "label-caps": ["Inter"],
+                "headline-md": ["Space Grotesk"]
+            },
+            "fontSize": {
+                "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "headline-lg": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                "display-xl": ["72px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(32, 31, 31, 0.4);
+            backdrop-filter: blur(32px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .atmospheric-hud {
+            border: 1px solid rgba(0, 228, 121, 0.15);
+            pointer-events: none;
+        }
+        .energy-track {
+            height: 2px;
+            background: rgba(0, 82, 40, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .energy-track-fill {
+            height: 100%;
+            background: #00e479;
+            box-shadow: 0 0 10px #00e479;
+        }
+        body {
+            background-color: #0e0e0e;
+            color: #e5e2e1;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0e0e0e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00e479;
+        }
+        .nebula-glow {
+            background: radial-gradient(circle at 50% 50%, rgba(0, 228, 121, 0.1) 0%, transparent 70%);
+        }
+    </style>
+</head>
+<body class="font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Atmospheric HUD -->
+<div class="fixed inset-margin-edge border atmospheric-hud z-[60] hidden md:block">
+<div class="absolute top-4 left-4 flex gap-stack-sm">
+<span class="font-label-caps text-label-caps text-primary-fixed-dim">SYSTEM STATUS: NOMINAL</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">CO2: 421.5 PPM</span>
+</div>
+<div class="absolute top-4 right-4 flex gap-stack-sm text-right">
+<span class="font-label-caps text-label-caps text-on-surface-variant">TEMP: +1.2°C</span>
+<span class="font-label-caps text-label-caps text-primary-fixed-dim">SECTOR: 01-EARTH</span>
+</div>
+<div class="absolute bottom-4 left-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant opacity-40">PLANETARY MONITORING STATION v4.0</span>
+</div>
+</div>
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-slate-950/40 backdrop-blur-md border-b border-white/10 flex justify-between items-center px-12 py-6">
+<div class="text-2xl font-bold tracking-tighter text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.5)] font-headline-lg">EARTH MISSION</div>
+<nav class="hidden md:flex gap-8">
+<a class="font-['Space_Grotesk'] tracking-widest uppercase text-sm text-emerald-400 font-bold border-b-2 border-emerald-400 pb-1" href="#">Mission</a>
+<a class="font-['Space_Grotesk'] tracking-widest uppercase text-sm text-slate-300 hover:text-white transition-colors" href="#">Vital Signs</a>
+<a class="font-['Space_Grotesk'] tracking-widest uppercase text-sm text-slate-300 hover:text-white transition-colors" href="#">Impact</a>
+<a class="font-['Space_Grotesk'] tracking-widest uppercase text-sm text-slate-300 hover:text-white transition-colors" href="#">Solutions</a>
+</nav>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 font-['Space_Grotesk'] tracking-widest uppercase text-sm scale-95 active:scale-90 transition-transform font-bold">Join Mission</button>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative h-screen flex flex-col items-center justify-center text-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary-fixed-dim/10 via-transparent to-transparent"></div>
+<img alt="Earth from space" class="w-full h-full object-cover opacity-60" data-alt="Cinematic view of Earth from deep space with glowing blue atmosphere and city lights visible on the dark side" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBztTuZDRtaOhsTImkmaBpfjpCFyjt8DAjEzI1zhPbRPmbd2mx6gnj_m6rsxqomZhk1CXsbznbZ6kR4gkDsQrHhw3RWCCnYpttvlRwvXUI_YSBsxydiXYoPXANSEnYUQkpsZ3gD_zTgtFrObNSlyAD9Aeag3FR4SJc0AuoHSahcfzPgrvG0jO2aXTWQbs9WRfkcGrTJL8Jc-zCaCFFqYPMvD7xV91TKwp4XHm4KaKPRYDE6y1ifPl51DAfSi8UR43s-wg7SkQRYh7A"/>
+</div>
+<div class="relative z-10 px-gutter max-w-container-max">
+<span class="font-label-caps text-label-caps text-primary-fixed-dim mb-4 block tracking-[0.4em]">MISSION STATUS: CRITICAL</span>
+<h1 class="font-display-xl text-display-xl mb-stack-md text-primary drop-shadow-2xl">Protect Our Planet</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-stack-lg">
+                    The ultimate objective is planetary restoration. Access the interface to monitor vital signs and initiate stewardship protocols.
+                </p>
+<div class="flex flex-col md:flex-row gap-stack-sm justify-center">
+<button class="bg-primary-fixed text-on-primary-fixed px-8 py-4 font-headline-md font-bold hover:brightness-110 transition-all flex items-center gap-2">
+                        EXPLORE IMPACT
+                        <span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+</button>
+<button class="glass-card px-8 py-4 font-headline-md font-medium border border-white/20 hover:bg-white/10 transition-all">
+                        JOIN THE MOVEMENT
+                    </button>
+</div>
+</div>
+<div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="keyboard_double_arrow_down">keyboard_double_arrow_down</span>
+</div>
+</section>
+<!-- Story Timeline -->
+<section class="py-stack-lg bg-surface">
+<div class="grid grid-cols-1 md:grid-cols-3 h-[600px] overflow-hidden">
+<div class="group relative overflow-hidden border-r border-white/5">
+<img alt="Pristine forest" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 opacity-50 group-hover:opacity-100" data-alt="Lush ancient forest with sunlight filtering through tall green trees and ferns in high definition" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdtuWVIEuWfc7Jv0jus_jRXfAX2RttZO698Z0HYcXlwbZ0oso4hBXWXHNucXdGiBQfoNbXYVvYQa1nHqcnT6CvWJt6OtWKGxH2Z0hOmJ211w_pHXZYJBJ5s6zbWJP_G7JCpNFH2viFHOWLwue1_NySxOFLFeSav4hkD3ipvskNP70D6ABaI30oFI8daaUstulaITsSReAXihTFiZDQqMKxS8XUtXUzY837eku0erYuNSxZd4FaKCJC5owi8FMDowcmJ6s-5ju7uBM"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent flex flex-col justify-end p-margin-edge">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-2">1950 - HOLOCENE</span>
+<h3 class="font-headline-lg text-headline-lg text-primary">Healthy</h3>
+<p class="text-on-surface-variant mt-2 font-body-md opacity-0 group-hover:opacity-100 transition-opacity">Optimal biodiversity levels and stable climate systems.</p>
+</div>
+</div>
+<div class="group relative overflow-hidden border-r border-white/5">
+<img alt="Polluted landscape" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 opacity-50 group-hover:opacity-100" data-alt="Distant industrial factory smokestacks emitting heavy smog over a grey urban wasteland" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6H9zm806Zhq9UTYfyA6V6GjerC5Gwxul5jsawizM2nTiz0xqBKnosYz3OOTGDHKLvquz3ABiT_VTL6Ps9LWN4Bst3Yxm5pyUlmnaK_Yr6rxxP4cX0ZhMWrI40jsUuFKDfdg1Sn61ZSk0eO2FvozqRTvWdYeTWdhQllqpPPTxck9ankNEHwJg9_66CNeP67AqUpDQo8-IL8emaWowI_ioHhnB9nub7tJPCZoNd_FpcZBYsHUk9yTUt_vmZbHlQP8SsWTcjW1TVq8g"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent flex flex-col justify-end p-margin-edge">
+<span class="font-label-caps text-label-caps text-error mb-2">2024 - ANTHROPOCENE</span>
+<h3 class="font-headline-lg text-headline-lg text-error">Pollution</h3>
+<p class="text-on-surface-variant mt-2 font-body-md opacity-0 group-hover:opacity-100 transition-opacity">Critical CO2 levels and mass plastic accumulation in biomes.</p>
+</div>
+</div>
+<div class="group relative overflow-hidden">
+<img alt="Sustainable city" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 opacity-50 group-hover:opacity-100" data-alt="Futuristic sustainable city with green rooftops, wind turbines, and clean architecture integrated with nature" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJ6rv14BmJ1p_szDEayhe5zzZTjKn6Dp6guWGnlbsweaT4IXNuqz5GNVubCw7O6T5uqlD2ExcWSekEzhN4r-jCPoOXPk1EiyZJvmMIgdbragmIPMpAuz3_qoNg4IqqulIMG0dLO3lAKxevsGK45CJmYkeRd8dKiImyRuyXIfHJ4b-Il3XQA0FwAq2CvX9VUvZuWFRso5k8VENXoqRSg_ItTJAnuJrdGvubfTg4ccyMx_uInkcA1PFpfAZAhu6orZ6iXXi0mz5X9Jc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent flex flex-col justify-end p-margin-edge">
+<span class="font-label-caps text-label-caps text-primary-fixed-dim mb-2">2050 - REGENERATION</span>
+<h3 class="font-headline-lg text-headline-lg text-primary-fixed-dim">Sustainable</h3>
+<p class="text-on-surface-variant mt-2 font-body-md opacity-0 group-hover:opacity-100 transition-opacity">Total transition to renewable ecosystems and circular economies.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Impact Stats -->
+<section class="py-stack-lg px-margin-edge max-w-container-max mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="glass-card p-stack-md relative group overflow-hidden">
+<div class="flex justify-between items-start mb-stack-sm">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="thermostat">thermostat</span>
+<span class="font-label-caps text-label-caps text-error">+1.2°C</span>
+</div>
+<h4 class="font-headline-md text-headline-md text-primary mb-2">Global Warming</h4>
+<p class="text-on-surface-variant text-body-md">Current increase from pre-industrial average.</p>
+<div class="energy-track mt-stack-md"><div class="energy-track-fill w-3/4"></div></div>
+</div>
+<div class="glass-card p-stack-md relative group">
+<div class="flex justify-between items-start mb-stack-sm">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="forest">forest</span>
+<span class="font-label-caps text-label-caps text-error">-15B Trees/Yr</span>
+</div>
+<h4 class="font-headline-md text-headline-md text-primary mb-2">Deforestation</h4>
+<p class="text-on-surface-variant text-body-md">Annual net loss of forest coverage globally.</p>
+<div class="energy-track mt-stack-md"><div class="energy-track-fill w-1/2"></div></div>
+</div>
+<div class="glass-card p-stack-md relative group">
+<div class="flex justify-between items-start mb-stack-sm">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="water_drop">water_drop</span>
+<span class="font-label-caps text-label-caps text-error">8M Tons/Yr</span>
+</div>
+<h4 class="font-headline-md text-headline-md text-primary mb-2">Ocean Pollution</h4>
+<p class="text-on-surface-variant text-body-md">Plastic entering oceans every year.</p>
+<div class="energy-track mt-stack-md"><div class="energy-track-fill w-[85%]"></div></div>
+</div>
+<div class="glass-card p-stack-md relative group">
+<div class="flex justify-between items-start mb-stack-sm">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="co2">co2</span>
+<span class="font-label-caps text-label-caps text-error">421 PPM</span>
+</div>
+<h4 class="font-headline-md text-headline-md text-primary mb-2">CO2 Levels</h4>
+<p class="text-on-surface-variant text-body-md">Carbon dioxide concentration in atmosphere.</p>
+<div class="energy-track mt-stack-md"><div class="energy-track-fill w-[92%]"></div></div>
+</div>
+</div>
+</section>
+<!-- Quote Section -->
+<section class="relative py-stack-lg overflow-hidden flex flex-col items-center justify-center min-h-[409px]">
+<div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"></div>
+<div class="relative z-10 max-w-4xl mx-auto text-center px-gutter">
+<span class="material-symbols-outlined text-primary-fixed-dim text-[48px] mb-stack-sm" data-icon="format_quote">format_quote</span>
+<h2 class="font-display-xl text-[48px] text-primary italic leading-tight mb-stack-sm">“The Earth is what we all have in common.”</h2>
+<div class="w-24 h-[1px] bg-primary-fixed mx-auto mb-stack-sm"></div>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Wendell Berry</span>
+</div>
+</section>
+<!-- Problems Bento Grid -->
+<section class="py-stack-lg px-margin-edge">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-stack-lg text-center uppercase tracking-widest">Current System Threats</h2>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter h-auto md:h-[600px]">
+<div class="md:col-span-8 glass-card relative overflow-hidden flex items-end p-stack-md">
+<img alt="Climate change impact" class="absolute inset-0 w-full h-full object-cover opacity-30" data-alt="Cracked dry earth in a desert landscape under a scorching hazy sun, representing drought and climate change" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsJH-MKl_BKx059qeqKKgSr9JQGZH3Ytn2WuP_yKxFFry6AZvSDpE7dc1NLtqVQlOsueXlqJUn2Qev2QOKe-OfeRFAiHTSo99ElwTldh5U08wuQ4vILu5n1IZnHEKCZsvr6KQx650JFbpGNzHEq28j-qXLkq6VO4oZuqhyM4MAWL4b1w4jkZbwFEvVhwjXPJCi5Krn0Uca_e3uiuBYpQDi9g972d-lSkmrJhcZqthZZGnMki_8juSmPfcRA-wwnDfAP73BJAp8CY4"/>
+<div class="relative z-10">
+<h3 class="font-headline-lg text-headline-lg text-primary">Climate Change</h3>
+<p class="font-body-md text-on-surface-variant max-w-lg">Accelerated atmospheric warming driving extreme weather patterns and ecosystem destabilization.</p>
+</div>
+</div>
+<div class="md:col-span-4 glass-card p-stack-md flex flex-col justify-center border-emerald-500/20">
+<span class="material-symbols-outlined text-error text-[40px] mb-4" data-icon="air">air</span>
+<h3 class="font-headline-md text-headline-md text-primary mb-2">Air Pollution</h3>
+<p class="text-on-surface-variant">99% of the world population breathes air that exceeds WHO quality limits.</p>
+</div>
+<div class="md:col-span-4 glass-card p-stack-md flex flex-col justify-center">
+<span class="material-symbols-outlined text-error text-[40px] mb-4" data-icon="recycling">recycling</span>
+<h3 class="font-headline-md text-headline-md text-primary mb-2">Plastic Waste</h3>
+<p class="text-on-surface-variant">Microplastics detected in every corner of the planet, from Everest to the Mariana Trench.</p>
+</div>
+<div class="md:col-span-8 glass-card relative overflow-hidden flex items-center p-stack-md">
+<img alt="Melting ice caps" class="absolute inset-0 w-full h-full object-cover opacity-30" data-alt="Large blue icebergs floating in dark arctic water under a pale cold sky, showing glacial melt" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUt5KL-676HIq4-bWQaAbWu-ZZZvq6YKzOjAo3REsDfZTFCg2TcnoGeZWWRasIV8QkU5uCLfqoyhfsz3foljZNYPfU_tBGLkKh9j7ca5850ktvxEKO9X6FRhQ2LXT-QaE5v32H6cD-NkUXxSlCLz8zT645Nl8tV2B2JqklOBNhw2amulp40WEsDOkrSGAZPrTsEFvcDGOBzlfR4m2Fovp9IcBgtA6vCmtW8JMpgf6R3iTcsEgN1rmY6vDtV8G1gO4UMLY0psPg1XM"/>
+<div class="relative z-10">
+<h3 class="font-headline-lg text-headline-lg text-primary">Melting Ice</h3>
+<p class="font-body-md text-on-surface-variant max-w-md">Polar regions are warming twice as fast as the global average, leading to rising sea levels.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Solutions -->
+<section class="py-stack-lg bg-surface-container-low">
+<div class="max-w-container-max mx-auto px-margin-edge">
+<div class="mb-stack-lg flex flex-col md:flex-row justify-between items-end gap-stack-sm">
+<div>
+<span class="font-label-caps text-label-caps text-primary-fixed-dim">RECOVERY PROTOCOLS</span>
+<h2 class="font-headline-lg text-headline-lg text-primary mt-2">Planetary Solutions</h2>
+</div>
+<p class="text-on-surface-variant max-w-sm font-body-md">Select a protocol to implement within your local jurisdiction.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<div class="glass-card hover:border-primary-fixed transition-all cursor-pointer p-stack-md group">
+<div class="w-12 h-12 bg-primary-fixed/10 flex items-center justify-center rounded-lg mb-stack-sm group-hover:bg-primary-fixed transition-colors">
+<span class="material-symbols-outlined text-primary-fixed group-hover:text-on-primary-fixed" data-icon="park">park</span>
+</div>
+<h4 class="font-headline-md text-headline-md text-primary mb-2">Plant Trees</h4>
+<p class="text-on-surface-variant font-body-md mb-stack-sm">Restoring global canopy to sequester billions of tons of carbon.</p>
+<span class="text-primary-fixed-dim font-label-caps text-label-caps">INITIATE →</span>
+</div>
+<div class="glass-card hover:border-primary-fixed transition-all cursor-pointer p-stack-md group">
+<div class="w-12 h-12 bg-primary-fixed/10 flex items-center justify-center rounded-lg mb-stack-sm group-hover:bg-primary-fixed transition-colors">
+<span class="material-symbols-outlined text-primary-fixed group-hover:text-on-primary-fixed" data-icon="inventory_2">inventory_2</span>
+</div>
+<h4 class="font-headline-md text-headline-md text-primary mb-2">Reduce Plastic</h4>
+<p class="text-on-surface-variant font-body-md mb-stack-sm">Implementing circular materials to eliminate non-biodegradable waste.</p>
+<span class="text-primary-fixed-dim font-label-caps text-label-caps">INITIATE →</span>
+</div>
+<div class="glass-card hover:border-primary-fixed transition-all cursor-pointer p-stack-md group">
+<div class="w-12 h-12 bg-primary-fixed/10 flex items-center justify-center rounded-lg mb-stack-sm group-hover:bg-primary-fixed transition-colors">
+<span class="material-symbols-outlined text-primary-fixed group-hover:text-on-primary-fixed" data-icon="opacity">opacity</span>
+</div>
+<h4 class="font-headline-md text-headline-md text-primary mb-2">Save Water</h4>
+<p class="text-on-surface-variant font-body-md mb-stack-sm">Optimizing freshwater management systems for the global population.</p>
+<span class="text-primary-fixed-dim font-label-caps text-label-caps">INITIATE →</span>
+</div>
+<div class="glass-card hover:border-primary-fixed transition-all cursor-pointer p-stack-md group">
+<div class="w-12 h-12 bg-primary-fixed/10 flex items-center justify-center rounded-lg mb-stack-sm group-hover:bg-primary-fixed transition-colors">
+<span class="material-symbols-outlined text-primary-fixed group-hover:text-on-primary-fixed" data-icon="solar_power">solar_power</span>
+</div>
+<h4 class="font-headline-md text-headline-md text-primary mb-2">Renewable Energy</h4>
+<p class="text-on-surface-variant font-body-md mb-stack-sm">Transitioning power grids to infinite clean energy sources.</p>
+<span class="text-primary-fixed-dim font-label-caps text-label-caps">INITIATE →</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Action Section -->
+<section class="py-stack-lg px-margin-edge max-w-container-max mx-auto text-center">
+<div class="glass-card p-margin-edge relative overflow-hidden bg-primary-container/5 border-primary-fixed/20">
+<div class="absolute -top-24 -right-24 w-64 h-64 bg-primary-fixed/10 blur-[100px]"></div>
+<div class="relative z-10">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-stack-md">Live Mission Telemetry</h2>
+<div class="flex flex-col md:flex-row justify-around gap-stack-lg">
+<div class="flex flex-col items-center">
+<span class="font-display-xl text-display-xl text-primary-fixed-dim">1,248,302</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">TREES PLANTED BY COMMUNITY</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="font-display-xl text-display-xl text-primary-fixed-dim">34.2T</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">CARBON OFFSET ACHIEVED</span>
+</div>
+</div>
+<div class="mt-stack-lg">
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-stack-sm">Calculate your individual impact on the planetary system.</p>
+<button class="bg-primary-fixed text-on-primary-fixed px-12 py-4 font-headline-md font-bold rounded-full hover:shadow-[0_0_20px_rgba(0,228,121,0.5)] transition-all">
+                            CALCULATE CARBON FOOTPRINT
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Join the Movement Form Section -->
+<section class="relative py-24 overflow-hidden">
+<div class="absolute inset-0 nebula-glow pointer-events-none opacity-40"></div>
+<div class="max-w-4xl mx-auto px-margin-edge relative z-10">
+<div class="text-center mb-16">
+<span class="font-label-caps text-label-caps text-primary-fixed-dim tracking-[0.4em] block mb-4">RECRUITMENT PROTOCOL</span>
+<h2 class="font-headline-lg text-headline-lg text-primary uppercase">Join the Movement</h2>
+<p class="text-on-surface-variant mt-4 font-body-lg max-w-2xl mx-auto">Commit to the mission. Register your contribution to the planetary stewardship network.</p>
+</div>
+<div class="glass-card p-8 md:p-12 border border-primary-fixed/10 shadow-[0_0_40px_rgba(0,0,0,0.4)]">
+<form action="#" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="space-y-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant block ml-1" for="name">Name</label>
+<input class="w-full bg-surface-container-lowest border border-white/10 rounded-lg p-4 text-primary focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed outline-none transition-all placeholder:text-on-surface-variant/30" id="name" placeholder="Agent Name" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant block ml-1" for="email">Email</label>
+<input class="w-full bg-surface-container-lowest border border-white/10 rounded-lg p-4 text-primary focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed outline-none transition-all placeholder:text-on-surface-variant/30" id="email" placeholder="communications@mission.org" type="email"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant block ml-1" for="country">Country</label>
+<input class="w-full bg-surface-container-lowest border border-white/10 rounded-lg p-4 text-primary focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed outline-none transition-all placeholder:text-on-surface-variant/30" id="country" placeholder="Your Sector" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant block ml-1" for="interest">Interest Area</label>
+<select class="w-full bg-surface-container-lowest border border-white/10 rounded-lg p-4 text-primary focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed outline-none transition-all appearance-none cursor-pointer" id="interest">
+<option class="bg-surface text-primary" value="reforestation">Reforestation</option>
+<option class="bg-surface text-primary" value="ocean">Ocean Cleanup</option>
+<option class="bg-surface text-primary" value="energy">Renewable Energy</option>
+<option class="bg-surface text-primary" value="policy">Policy Advocacy</option>
+</select>
+</div>
+<div class="md:col-span-2 flex items-center gap-3 mt-2">
+<input class="w-5 h-5 rounded border-white/10 bg-surface-container-lowest text-primary-fixed focus:ring-primary-fixed focus:ring-offset-surface cursor-pointer" id="newsletter" type="checkbox"/>
+<label class="font-body-md text-on-surface-variant cursor-pointer" for="newsletter">I want to receive mission updates and planetary telemetry via email.</label>
+</div>
+<div class="md:col-span-2 mt-4">
+<button class="w-full bg-primary-fixed text-on-primary-fixed font-headline-md font-bold py-5 rounded-lg hover:shadow-[0_0_20px_rgba(0,228,121,0.5)] transition-all uppercase tracking-widest active:scale-[0.98]" type="submit">
+                                Submit My Commitment
+                            </button>
+</div>
+</form>
+</div>
+</div>
+</section>
+<!-- Footer CTA -->
+<section class="relative min-h-[614px] flex items-center justify-center overflow-hidden">
+<img alt="Earth from the moon" class="absolute inset-0 w-full h-full object-cover opacity-20" data-alt="Earth rising over the horizon of the moon in black and white with stark cosmic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZw8_203IWKqLwzZc5GBMEmCGQav-MS6gy_mvesXE6-Df93PYpvh9ntfkMb5ckL8eddL_CUe5NdY6irh6fjUrHWQ2MWkyVY5DgCwq0uOCYmVEgnrSf2EY7RS3-NcQPDGBaqgbfZQ0HEwTw7jO19x4UFyGydJX7Mh7GyFZaA2pDYUtYbrO3GSjeunk6LvqV5UtkXaTBGXchHx_1JNsKhKW2JsVE0FcBMMwwAChleWtYrppTHyPsspVIDz7B6NfRlRiNr71LYIcM2Y0"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent"></div>
+<div class="relative z-10 text-center px-gutter">
+<h2 class="font-display-xl text-display-xl text-primary-fixed mb-stack-sm drop-shadow-[0_0_20px_rgba(0,228,121,0.5)]">There is No Planet B</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-stack-lg max-w-xl mx-auto">The mission window is closing. Secure the future of our only home through immediate collective action.</p>
+<div class="flex flex-col md:flex-row gap-4 justify-center items-center">
+<input class="bg-surface-container-lowest border-primary-fixed/30 border text-primary-fixed font-label-caps p-4 w-full md:w-80 focus:ring-primary-fixed focus:border-primary-fixed" placeholder="ENTER MISSION COMMS (EMAIL)" type="email"/>
+<button class="bg-primary-fixed text-on-primary-fixed font-headline-md font-bold px-8 py-4 w-full md:w-auto">SUBSCRIBE</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-16 px-12 flex flex-col md:flex-row justify-between items-center gap-8 bg-slate-950/80 backdrop-blur-2xl border-t border-white/5 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+<div class="text-emerald-400 font-black font-headline-md tracking-tighter">PLANETARY STEWARDSHIP COMMAND</div>
+<nav class="flex gap-12">
+<a class="font-['Space_Grotesk'] text-[10px] tracking-[0.2em] uppercase text-slate-500 hover:text-slate-300 transition-colors" href="#">Privacy Protocol</a>
+<a class="font-['Space_Grotesk'] text-[10px] tracking-[0.2em] uppercase text-slate-500 hover:text-slate-300 transition-colors" href="#">Mission Briefing</a>
+<a class="font-['Space_Grotesk'] text-[10px] tracking-[0.2em] uppercase text-slate-500 hover:text-slate-300 transition-colors" href="#">Global Telemetry</a>
+</nav>
+<div class="font-['Space_Grotesk'] text-[10px] tracking-[0.2em] uppercase text-slate-500 opacity-80">© 2024 PLANETARY STEWARDSHIP COMMAND. ALL SYSTEMS OPERATIONAL.</div>
+</footer>
+</body></html>
