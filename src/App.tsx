@@ -158,12 +158,25 @@ export default function App() {
   const [footprintMode, setFootprintMode] = useState<"awareness" | "actions">("awareness");
   const [treeCountReady, setTreeCountReady] = useState(false);
 
-  const appRef = useRef<HTMLDivElement>(null);
-  const introRef = useRef<HTMLDivElement>(null);
-  const heroRef = useRef<HTMLElement>(null);
-  const timelineRef = useRef<HTMLElement>(null);
-  const impactRef = useRef<HTMLElement>(null);
   const finalEarthRef = useRef<HTMLDivElement>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const currentScroll = window.scrollY;
+      setScrollProgress(currentScroll / totalScroll);
+      setIsScrolled(currentScroll > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const treeCount = useCountUp(1248302, treeCountReady, 2.2);
 
@@ -403,12 +416,25 @@ export default function App() {
         </div>
       ) : null}
 
-      <header className="site-hud">
-        <span>GaiaVerse</span>
-        <div>
-          <span>CO2 421 PPM</span>
-          <span>Warming +1.2 C</span>
-          <span>Earth Day 2026</span>
+      <header className={`site-hud main-nav ${isScrolled ? "scrolled" : ""}`}>
+        <div className="nav-logo">
+          <span className="logo-icon">🌍</span>
+          <strong>GaiaVerse</strong>
+        </div>
+        <nav className="nav-links">
+          <a href="#hero" className="nav-link">Home</a>
+          <a href="#story" className="nav-link">Story</a>
+          <a href="#impact" className="nav-link">Impact</a>
+          <a href="#solutions" className="nav-link">Solutions</a>
+          <a href="#action" className="nav-link nav-action">Take Action</a>
+        </nav>
+        <div className="nav-stats">
+          <div className="nav-status-indicator">
+            <span className="status-pulse"></span>
+            <span className="status-text">GAIA SIGNAL: LIVE</span>
+          </div>
+          <span className="stat-item"><span className="stat-label">CO2</span> 421 PPM</span>
+          <span className="stat-item"><span className="stat-label">TEMP</span> +1.2°C</span>
         </div>
       </header>
 
@@ -445,8 +471,37 @@ export default function App() {
                 ))}
               </div>
             </div>
+            <div className="hero-scroll-indicator">
+              <div className="mouse">
+                <div className="wheel" />
+              </div>
+              <span>Scroll to Explore</span>
+            </div>
           </div>
         </section>
+
+        <button 
+          className={`back-to-top ${scrollProgress > 0.1 ? "visible" : ""}`}
+          onClick={scrollToTop}
+          aria-label="Back to top"
+        >
+          <svg className="progress-ring" width="50" height="50">
+            <circle
+              className="progress-ring__circle"
+              stroke="var(--green)"
+              strokeWidth="2"
+              fill="transparent"
+              r="22"
+              cx="25"
+              cy="25"
+              style={{
+                strokeDasharray: `${2 * Math.PI * 22}`,
+                strokeDashoffset: `${2 * Math.PI * 22 * (1 - scrollProgress)}`
+              }}
+            />
+          </svg>
+          <span className="arrow">↑</span>
+        </button>
 
         <section className="story-section container" id="story" ref={timelineRef}>
           <div className="section-intro">
