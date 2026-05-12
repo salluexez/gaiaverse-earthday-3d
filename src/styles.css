@@ -727,22 +727,30 @@ button {
   gap: 12px;
   opacity: 0.8;
   pointer-events: none;
+  animation: float-indicator 3s ease-in-out infinite;
+  transition: opacity 0.5s ease;
+}
+
+@keyframes float-indicator {
+  0%, 100% { transform: translate(-50%, 0); }
+  50% { transform: translate(-50%, -10px); }
 }
 
 .hero-scroll-indicator span {
   font-family: "Source Code Pro", monospace;
   font-size: 0.65rem;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.25em;
   color: var(--muted);
 }
 
 .mouse {
-  width: 24px;
-  height: 40px;
-  border: 2px solid var(--muted);
+  width: 26px;
+  height: 44px;
+  border: 2px solid rgba(222, 240, 255, 0.3);
   border-radius: 20px;
   position: relative;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
 .wheel {
@@ -751,27 +759,28 @@ button {
   background: var(--green);
   border-radius: 2px;
   position: absolute;
-  top: 6px;
+  top: 8px;
   left: 50%;
   transform: translateX(-50%);
-  animation: scroll-wheel 1.6s ease-out infinite;
+  animation: scroll-wheel 2s ease-out infinite;
+  box-shadow: 0 0 8px var(--green);
 }
 
 @keyframes scroll-wheel {
   0% { transform: translate(-50%, 0); opacity: 0; }
   30% { opacity: 1; }
-  100% { transform: translate(-50%, 15px); opacity: 0; }
+  100% { transform: translate(-50%, 18px); opacity: 0; }
 }
 
 .back-to-top {
   position: fixed;
   bottom: 30px;
   right: 30px;
-  width: 50px;
-  height: 50px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
-  background: rgba(5, 12, 28, 0.8);
-  border: 1px solid rgba(194, 240, 255, 0.2);
+  background: rgba(5, 12, 28, 0.6);
+  border: 1px solid rgba(194, 240, 255, 0.1);
   color: var(--text);
   cursor: pointer;
   z-index: 45;
@@ -781,8 +790,9 @@ button {
   opacity: 0;
   visibility: hidden;
   transform: scale(0.8) translateY(20px);
-  transition: all 400ms cubic-bezier(0.2, 0.8, 0.2, 1);
-  backdrop-filter: blur(10px);
+  transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(12px) saturate(180%);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .back-to-top.visible {
@@ -792,9 +802,12 @@ button {
 }
 
 .back-to-top:hover {
-  background: rgba(5, 12, 28, 0.95);
+  background: rgba(5, 12, 28, 0.85);
   border-color: var(--green);
-  transform: scale(1.1);
+  transform: scale(1.1) translateY(-5px);
+  box-shadow: 
+    0 15px 40px rgba(22, 243, 154, 0.2),
+    0 0 0 1px rgba(22, 243, 154, 0.1);
 }
 
 .progress-ring {
@@ -802,16 +815,24 @@ button {
   top: 0;
   left: 0;
   transform: rotate(-90deg);
+  pointer-events: none;
 }
 
 .progress-ring__circle {
-  transition: stroke-dashoffset 0.1s linear;
+  transition: stroke-dashoffset 0.15s linear;
+  stroke: var(--green);
+  filter: drop-shadow(0 0 4px var(--green));
 }
 
 .back-to-top .arrow {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 700;
   margin-top: -2px;
+  transition: transform 300ms ease;
+}
+
+.back-to-top:hover .arrow {
+  transform: translateY(-2px);
 }
 
 .story-section,
