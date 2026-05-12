@@ -1229,86 +1229,86 @@ button {
   .story-orbit {
     position: relative;
     top: auto;
+    margin-bottom: 24px;
   }
 
   .hero-content {
-    align-items: flex-end;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-top: 120px;
+  }
+
+  .hero-copy {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-description {
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .explore-shell {
     grid-template-columns: 1fr;
     min-height: auto;
+    overflow-y: auto;
   }
 
   .explore-copy {
     max-width: none;
     padding-top: 10px;
+    text-align: center;
   }
 
   .explore-canvas-shell {
-    min-height: 58vh;
+    min-height: 50vh;
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 768px) {
   .site-hud {
-    inset: 12px;
-    border-radius: 24px;
-    padding: 14px;
-    flex-direction: column;
-    align-items: flex-start;
+    inset: 12px 12px auto 12px;
+    padding: 10px 16px;
+    border-radius: 20px;
   }
 
-  .site-hud div {
-    flex-wrap: wrap;
+  .nav-links {
+    display: none; /* Hide links on very small screens for simplicity, or we could add a menu */
   }
 
-  .hero-section,
-  .story-section,
-  .impact-section,
-  .problems-section,
-  .solutions-section,
-  .action-section,
-  .quote-section,
-  .final-cta {
-    padding-top: 84px;
-    padding-bottom: 84px;
+  .nav-stats {
+    gap: 12px;
   }
 
-  .hero-content {
-    min-height: auto;
-    padding-top: 180px;
+  .stat-item {
+    font-size: 0.65rem;
   }
 
-  .hero-copy {
-    width: 100%;
+  .nav-status-indicator {
+    margin-right: 0;
+  }
+
+  .hero-section {
+    padding-top: 140px;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(2.8rem, 10vw, 4.5rem);
   }
 
   .impact-grid,
   .card-grid,
   .problems-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .hero-copy {
-    width: 100%;
-    text-align: center;
-  }
-
-  .hero-actions,
-  .hero-highlights {
-    justify-content: center;
-  }
-
-  .hero-description {
-    margin: 18px auto 0;
+    gap: 20px;
   }
 
   .section-intro {
     text-align: center;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto 40px;
   }
 
   .section-intro .eyebrow {
@@ -1319,46 +1319,28 @@ button {
     display: none;
   }
 
-  .hud-line {
+  .action-shell {
+    padding: 24px;
+  }
+
+  .action-panel strong {
+    font-size: 2.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-actions {
     flex-direction: column;
-    align-items: center;
+    width: 100%;
   }
 
-  .intro-copy {
-    gap: 22px;
+  .primary-button,
+  .secondary-button {
+    width: 100%;
   }
 
-  .timeline-orb {
-    width: 132px;
-  }
-
-  .story-orbit,
-  .story-card,
-  .action-shell,
-  .action-panel {
-    padding: 22px;
-  }
-
-  .final-shell h2 {
-    margin-top: 160px;
-  }
-
-  .explore-overlay {
-    padding: 12px;
-  }
-
-  .explore-shell {
-    width: min(100vw - 24px, 100%);
-    padding: 18px;
-  }
-
-  .explore-close {
-    top: 14px;
-    right: 14px;
-  }
-
-  .explore-canvas-shell {
-    min-height: 50vh;
+  .nav-stats .stat-item:last-child {
+    display: none;
   }
 }
 
